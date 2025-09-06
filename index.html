@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="logoStudio.png" />
+    <title>Studio Filmowe Psary</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #f8fafc;
+            background: #0f0f23;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(15, 15, 35, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #6366f1;
+            letter-spacing: -0.025em;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 3rem;
+        }
+
+        .nav-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-links a:hover {
+            color: #f8fafc;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Main Content */
+        main {
+            margin-top: 80px;
+        }
+
+        .page {
+            display: none;
+            min-height: calc(100vh - 80px);
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Home Page */
+        .hero {
+            padding: 8rem 0 6rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 5rem);
+            font-weight: 800;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: #94a3b8;
+            margin-bottom: 3rem;
+            font-weight: 400;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.4);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 6rem;
+        }
+
+        .feature-card {
+            background: rgba(15, 15, 35, 0.5);
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #f8fafc;
+        }
+
+        .feature-card p {
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        /* Movies Page */
+        .page-header {
+            text-align: center;
+            padding: 6rem 0 4rem;
+        }
+
+        .page-header h2 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            color: #94a3b8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .movies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+            padding-bottom: 6rem;
+        }
+
+        .movie-card {
+            background: rgba(15, 15, 35, 0.5);
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            border-radius: 24px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+        }
+
+        .movie-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 240px;
+            overflow: hidden;
+        }
+
+        .video-thumbnail {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .video-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+        }
+
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: rgba(99, 102, 241, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 2;
+        }
+
+
+        .play-button:hover {
+            background: #6366f1;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+        }
+
+        .play-button::after {
+            content: '▶';
+            color: white;
+            font-size: 1.8rem;
+            margin-left: 4px;
+        }
+
+        .movie-info {
+            padding: 2rem;
+        }
+
+        .movie-info h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #f8fafc;
+        }
+
+        .movie-meta {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .movie-meta span {
+            color: #6366f1;
+            font-weight: 600;
+        }
+
+        .movie-info p {
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        /* Team Page */
+        .team-section {
+            padding: 6rem 0;
+        }
+
+        .team-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .team-member {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            background: rgba(15, 15, 35, 0.5);
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            border-radius: 24px;
+            padding: 2.5rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .team-member:hover {
+            transform: translateY(-4px);
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .team-photo {
+            width: 200px;
+            height: 200px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .team-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+        }
+
+        .team-photo::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+        }
+
+        .team-info {
+            flex: 1;
+        }
+
+        .team-role {
+            color: #6366f1;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .team-name {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #f8fafc;
+            margin-bottom: 1.5rem;
+        }
+
+        .team-description {
+            color: #94a3b8;
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+
+        /* Team Photo Section */
+        .team-photo-section {
+            margin-top: 6rem;
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .team-photo-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+        }
+
+        .team-group-photo {
+            background: rgba(15, 15, 35, 0.5);
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            border-radius: 24px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .team-group-photo:hover {
+            transform: translateY(-4px);
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .team-group-photo img {
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+            filter: grayscale(100%);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .team-group-photo:hover img {
+            filter: grayscale(0%);
+        }
+
+        .team-photo-caption {
+            margin-top: 1.5rem;
+            color: #94a3b8;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* History Page */
+        .timeline {
+            position: relative;
+            padding: 4rem 0 6rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, #6366f1, #8b5cf6);
+        }
+
+        .timeline-item {
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 2rem;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 16px;
+            background: #6366f1;
+            border-radius: 50%;
+            border: 4px solid #0f0f23;
+            z-index: 2;
+        }
+
+        .timeline-content {
+            background: rgba(15, 15, 35, 0.5);
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            padding: 2.5rem;
+            border-radius: 20px;
+            width: 45%;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .timeline-content:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: 55%;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-right: 55%;
+        }
+
+        .timeline-year {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .timeline-content h3 {
+            color: #f8fafc;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .timeline-content p {
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        /* Application Form */
+        .application-section {
+            padding: 6rem 0;
+        }
+
+        .application-form {
+            background: rgba(15, 15, 35, 0.5);
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            border-radius: 24px;
+            padding: 3rem;
+            max-width: 800px;
+            margin: 0 auto;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            display: block;
+            color: #f8fafc;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 12px;
+            background: rgba(15, 15, 35, 0.5);
+            color: #f8fafc;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(5px);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #64748b;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            background: rgba(15, 15, 35, 0.8);
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            padding: 1rem 3rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.4);
+        }
+
+        /* News Page */
+        .news-section {
+            padding: 6rem 0;
+        }
+
+        .news-item {
+            background: rgba(15, 15, 35, 0.5);
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .news-item:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .news-date {
+            color: #6366f1;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .news-item h3 {
+            color: #f8fafc;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .news-item p {
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding: 4rem 0 3rem;
+            }
+
+            .features-grid,
+            .movies-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .team-member {
+                flex-direction: column;
+                text-align: center;
+                gap: 2rem;
+            }
+
+            .team-photo {
+                width: 150px;
+                height: 150px;
+                font-size: 3rem;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item::before {
+                left: 20px;
+            }
+
+            .timeline-content {
+                width: calc(100% - 60px);
+                margin-left: 60px !important;
+                margin-right: 0 !important;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+        }
+
+        /* Smooth animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #6366f1, #8b5cf6);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, #5b64e6, #7c3aed);
+        }
+
+        img {
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo-container">
+                <img src="logoStudio.png" alt="Studio Filmowe Psary Logo" class="logo-image">
+                <div class="logo">Studio Filmowe Psary</div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#" onclick="showPage('home')">Strona Główna</a></li>
+                <li><a href="#" onclick="showPage('movies')">Filmy</a></li>
+                <li><a href="#" onclick="showPage('team')">Kadra</a></li>
+                <li><a href="#" onclick="showPage('history')">Historia</a></li>
+                <li><a href="#" onclick="showPage('apply')">Aplikuj</a></li>
+                <li><a href="#" onclick="showPage('news')">Aktualności</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Home Page -->
+        <div id="home" class="page active">
+            <div class="container">
+                <div class="hero">
+                    <div class="hero-content">
+                        <h1>Studio Filmowe Psary</h1>
+                        <p class="hero-subtitle">Tworzymy niezapomniane historie filmowe od 1995 roku</p>
+                        <a href="#" class="cta-button" onclick="showPage('movies')">
+                            Odkryj Nasze Filmy
+                            <span>→</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <span class="feature-icon">🎬</span>
+                        <h3>Produkcja Filmowa</h3>
+                        <p>Specjalizujemy się w tworzeniu filmów fabularnych, dokumentalnych i reklamowych najwyższej jakości z wykorzystaniem najnowszych technologii.</p>
+                    </div>
+                    <div class="feature-card">
+                        <span class="feature-icon">✨</span>
+                        <h3>Kreatywne Podejście</h3>
+                        <p>Każdy projekt traktujemy indywidualnie, łącząc innowacyjne rozwiązania z artystyczną wizją i profesjonalnym wykonaniem.</p>
+                    </div>
+                    <div class="feature-card">
+                        <span class="feature-icon">🏆</span>
+                        <h3>Międzynarodowe Uznanie</h3>
+                        <p>Nasze filmy zostały nagrodzone na prestiżowych festiwalach filmowych w Polsce i na świecie, zdobywając uznanie krytyków.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Movies Page -->
+        <div id="movies" class="page">
+            <div class="container">
+                <div class="page-header">
+                    <h2>Nasze Filmy</h2>
+                    <p>Poznaj najnowsze produkcje naszego studia</p>
+                </div>
+                
+                <div class="movies-grid">
+                    <div class="movie-card">
+                        <div class="video-container">
+                            <img src="emilMini.jpg" alt="Miniatura filmu" class="video-thumbnail">
+                            <div class="play-button" onclick="playMovie('movie1')"></div>
+                        </div>
+                        <div class="movie-info">
+                            <h3>Edit Emila</h3>
+                            <div class="movie-meta">
+                                <div><span>Gatunek:</span> Thriller/Dramat</div>
+                                <div><span>Rok:</span> 2025</div>
+                            </div>
+                            <p>Mroczny thriller o Emilu, który nie zna litości. Film łączy elementy psychologicznego dramatu z napięciem charakterystycznym dla najlepszych thrillerów.</p>
+                        </div>
+                    </div>
+
+                    <div class="movie-card">
+                        <div class="video-container">
+                            <img src="antekMini.jpg" alt="Miniatura filmu" class="video-thumbnail">
+                            <div class="play-button" onclick="playMovie('movie2')"></div>
+                        </div>
+                        <div class="movie-info">
+                            <h3>Edit Antka</h3>
+                            <div class="movie-meta">
+                                <div><span>Gatunek:</span> Akcja</div>
+                                <div><span>Rok:</span> 2025</div>
+                            </div>
+                            <p>Film pokazujący wielką podróż i przemianę głównego bohatera w którego wciela się jeden z aktorów - Antoni</p>
+                        </div>
+                    </div>
+
+                    <div class="movie-card">
+                        <div class="video-container">
+                            <img src="kubaMini.jpg" alt="Miniatura filmu" class="video-thumbnail">
+                            <div class="play-button" onclick="playMovie('movie3')"></div>
+                        </div>
+                        <div class="movie-info">
+                            <h3>Edit Jakuba</h3>
+                            <div class="movie-meta">
+                                <div><span>Gatunek:</span> Fantasy/Przygodowy</div>
+                                <div><span>Rok:</span> 2025</div>
+                            </div>
+                            <p>Przyjazny film akcji opowiadający o człowieku, którego technologia Garmin zmieniła całkowicie. Doceniony przez wielu krytyków. W rolę głównego bohatera wciela się Jakub</p>
+                        </div>
+                    </div>
+
+                    <div class="movie-card">
+                        <div class="video-container">
+                            <img src="marcelMini.jpg" alt="Miniatura filmu" class="video-thumbnail">
+                            <div class="play-button" onclick="playMovie('movie4')"></div>
+                        </div>
+                        <div class="movie-info">
+                            <h3>Edit Marcela</h3>
+                            <div class="movie-meta">
+                                <div><span>Gatunek:</span> Dokumentalny/Dramat</div>
+                                <div><span>Rok:</span> 2025</div>
+                            </div>
+                            <p>Fascynujący film dokumentalny pokazujący życie Mar-cel Hun, koreańskiego mężczyzne który tonie w długach. Przez to decyduję się wziąć udział w śmiertelnych grach.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Team Page -->
+        <div id="team" class="page">
+            <div class="container">
+                <div class="page-header">
+                    <h2>Nasza Kadra</h2>
+                    <p>Poznaj zespół profesjonalistów tworzących nasze filmy</p>
+                </div>
+                
+                <div class="team-section">
+                    <div class="team-grid">
+                        <div class="team-member">
+                            <div class="team-photo"><img src="emilStudio.jpg" alt="emil"></div>
+                            <div class="team-info">
+                                <div class="team-role">Reżyser / Montażysta / Aktor</div>
+                                <h3 class="team-name">Emil Woźniak</h3>
+                                <p class="team-description">Emil Woźniak od najmłodszych lat marzył o stworzeniu własnego studia filmowego. Po latach nauki i ciężkiej pracy ukończył Harvard University, zdobywając wiedzę i doświadczenie, które pomogły mu zrealizować ten cel. Dziś z dumą prowadzi swoje studio, a jego charyzma i wyjątkowa uroda sprawiają, że cieszy się ogromnym powodzeniem wśród kobiet, które nie kryją swojego zachwytu jego osobą.</p>
+                            </div>
+                        </div>
+
+                        <div class="team-member">
+                            <div class="team-photo"><img src="antekTest.jpg" alt="antek"></div>
+                            <div class="team-info">
+                                <div class="team-role">Aktor / Programista</div>
+                                <h3 class="team-name">Antoni Kiwer</h3>
+                                <p class="team-description">Antoni, urodzony w Polsce, wyróżnia się przedsiębiorczością, inteligencją i nienagannym wyglądem. Dzięki bystremu umysłowi i odwadze w podejmowaniu decyzji zbudował odnoszącą sukcesy firmę. Jego charyzma i elegancja ułatwiają nawiązywanie relacji biznesowych oraz zdobywanie zaufania klientów. Antoni jest wzorem nowoczesnego lidera, który inspiruje innych do osiągania ambitnych celów.</p>
+                            </div>
+                        </div>
+
+                        <div class="team-member">
+                            <div class="team-photo"><img src="damianStudio.jpg" alt="damian"></div>
+                            <div class="team-info">
+                                <div class="team-role">Aktor / Operator</div>
+                                <h3 class="team-name">Damian Koźmiński</h3>
+                                <p class="team-description">Damian Koźmiński skończył technikum jako elektryk, ale szybko zrozumiał, że to nie jego droga. Od dziecka marzył o aktorstwie – wszystko zaczęło się, gdy jako chłopiec mieszkał w Indiach i zobaczył na żywo plan filmowy. Kolorowe stroje, emocje i magia kamery zapadły mu w pamięć na zawsze. Po skończeniu szkoły postanowił nie iść utartym szlakiem – zgłosił się do pracy przy filmach i zaczął spełniać marzenie z dzieciństwa.</p>
+                            </div>
+                        </div>
+
+                        <div class="team-member">
+                            <div class="team-photo"><img src="marcelStudio.jpg" alt="marcel"></div>
+                            <div class="team-info">
+                                <div class="team-role">Aktor / Dźwiękowiec</div>
+                                <h3 class="team-name">Marcel Szumiec</h3>
+                                <p class="team-description">Marcel Szumiec, porzucony w dzieciństwie w Anglii, został odnaleziony w zgniatarce na liście i cudem uratowany. Po latach przeniósł się do Polski, gdzie jako bezdomny nauczył się języka. W domu społecznym często oglądał filmy, które rozbudziły w nim pasję do aktorstwa. Jego talent został odkryty podczas ulicznego performance przez reżysera studia Psary, co odmieniło jego życie.</p>
+                            </div>
+                        </div>
+
+                        <div class="team-member">
+                            <div class="team-photo"><img src="kubaStudio.jpg" alt="kuba"></div>
+                            <div class="team-info">
+                                <div class="team-role">Kaskader / Aktor</div>
+                                <h3 class="team-name">Jakub Bijak</h3>
+                                <p class="team-description">Jakub Bijak to charyzmatyczny i przystojny chłopak, który pasjonuje się piłką nożną, grami komputerowymi oraz motoryzacją. Od zawsze marzył o byciu popularnym – marzenie to zaczyna się spełniać dzięki wsparciu jego pracodawcy, twórcy internetowych filmów, który dostrzegł w Jakubie naturalny talent do przyciągania uwagi. Z energią, uśmiechem i pewnością siebie Jakub zyskuje coraz większe grono fanów, łącząc swoje pasje z rosnącą rozpoznawalnością.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Team Group Photo Section -->
+                    <div class="team-photo-section">
+                        <h3 class="team-photo-title">Cały Zespół</h3>
+                        <div class="team-group-photo">
+                            <img src="zdjecieKadra.jpg" alt="Zespół Studio Filmowe Psary">
+                            <p class="team-photo-caption">
+                                Zespół Studia Filmowego Psary na gali rozdania Oscarów. 
+                                Od lewej: Damian Koźmiński (Aktor/Operator), Jakub Bijak (Kaskader/Aktor), 
+                                Marcel Szumiec (Aktor/Dźwiękowiec), Emil Woźniak (Reżyser), 
+                                Antoni Kiwer (Aktor/Programista).
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Page -->
+        <div id="history" class="page">
+            <div class="container">
+                <div class="page-header">
+                    <h2>Historia Studia</h2>
+                    <p>Nasza droga od małego studia do uznanej wytwórni filmowej</p>
+                </div>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-year">2020</div>
+                            <h3>Początki</h3>
+                            <p>Założenie studia przez grupę młodych filmowców. Początki nagrywania filmów. (Arabski Szejk na placu zabaw i złodziej)</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-year">2020</div>
+                            <h3>Przełom</h3>
+                            <p>Nagroda publiczności na Festiwalu Filmowym w Cannes za wielki sukces Filmu Halloweenowego</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-year">2021-2024</div>
+                            <h3>Przerwa</h3>
+                            <p>Zaprzestanie produkcji filmowej z powodu chęci zdobycia wyższego wykształcenia w szkole aktorskiej oraz technikum filmowym</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-year">2025</div>
+                            <h3>Wielki powrót</h3>
+                            <p>Pierwszy filmy studia od dłuższej przerwy. Sukcesy wielu filmów nagranych w okresie letnim.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-year">2025</div>
+                            <h3>Transformacja Cyfrowa</h3>
+                            <p>Adaptacja do nowej rzeczywistości, rozwój produkcji cyfrowej poprzez zainwestowanie w narzędzia sztucznej inteligencji oraz najlepsze programy do obróbki filmowej</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-year">2025</div>
+                            <h3>Przyszłość</h3>
+                            <p>Kontynuowanie misji tworzenia wyjątkowego kina z wykorzystaniem najnowszych technologii i międzynarodowych talentów. Wielkie i ambitne plany na film krótko metrażowy</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Apply Page -->
+        <div id="apply" class="page">
+            <div class="container">
+                <div class="page-header">
+                    <h2>Dołącz do Nas</h2>
+                    <p>Szukasz swojego miejsca w świecie filmu? Aplikuj jako aktor do naszego studia</p>
+                </div>
+                
+                <div class="application-section">
+                    <div class="application-form">
+                        <form id="actorForm">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="fullName">Imię i Nazwisko *</label>
+                                    <input type="text" id="fullName" name="fullName" required placeholder="Jan Kowalski">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email">Adres Email *</label>
+                                    <input type="email" id="email" name="email" required placeholder="jan@example.com">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="phone">Numer Telefonu *</label>
+                                    <input type="tel" id="phone" name="phone" required placeholder="+48 123 456 789">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="age">Wiek</label>
+                                    <input type="number" id="age" name="age" min="16" max="100" placeholder="25">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="experience">Poziom Doświadczenia</label>
+                                    <select id="experience" name="experience">
+                                        <option value="">Wybierz poziom</option>
+                                        <option value="beginner">Początkujący</option>
+                                        <option value="amateur">Amator</option>
+                                        <option value="semi-professional">Półprofesjonalista</option>
+                                        <option value="professional">Profesjonalista</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="specialization">Preferowany Gatunek</label>
+                                    <select id="specialization" name="specialization">
+                                        <option value="">Wybierz gatunek</option>
+                                        <option value="drama">Dramat</option>
+                                        <option value="comedy">Komedia</option>
+                                        <option value="action">Akcja</option>
+                                        <option value="horror">Horror</option>
+                                        <option value="romance">Romans</option>
+                                        <option value="documentary">Dokumentalny</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group full-width">
+                                    <label for="portfolio">Portfolio / Demo Reel</label>
+                                    <input type="url" id="portfolio" name="portfolio" placeholder="https://twoje-portfolio.com">
+                                </div>
+
+                                <div class="form-group full-width">
+                                    <label for="bio">O Sobie *</label>
+                                    <textarea id="bio" name="bio" rows="5" required placeholder="Opowiedz nam o swoim doświadczeniu, pasjach i motywacjach..."></textarea>
+                                </div>
+
+                                <div class="form-group full-width">
+                                    <label for="availability">Dostępność</label>
+                                    <textarea id="availability" name="availability" rows="3" placeholder="Kiedy jesteś dostępny/a? Czy masz jakieś ograniczenia czasowe?"></textarea>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="submit-btn">Wyślij Aplikację</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- News Page -->
+        <div id="news" class="page">
+            <div class="container">
+                <div class="page-header">
+                    <h2>Aktualności</h2>
+                    <p>Najnowsze wiadomości ze świata Studio Filmowe Psary</p>
+                </div>
+                
+                <div class="news-section">
+                    <div class="news-item">
+                        <div class="news-date">15 stycznia 2025</div>
+                        <h3>Rozpoczęcie zdjęć do "Serca Psar"</h3>
+                        <p>Z dumą ogłaszamy rozpoczęcie prac nad naszym najnowszym projektem. "Serca Psar" to współczesny dramat romantyczny, który będzie kręcony w malowniczych lokalizacjach naszego regionu. W głównych rolach wystąpią uznani polscy aktorzy.</p>
+                    </div>
+
+                    <div class="news-item">
+                        <div class="news-date">8 stycznia 2025</div>
+                        <h3>Warsztaty Aktorskie - Nowy Nabór</h3>
+                        <p>Zapraszamy na profesjonalne warsztaty aktorskie prowadzone przez doświadczonych instruktorów. Program obejmuje techniki aktorskie, pracę z emocjami, improwizację oraz praktyczne ćwiczenia przed kamerą.</p>
+                    </div>
+
+                    <div class="news-item">
+                        <div class="news-date">22 grudnia 2024</div>
+                        <h3>"Tajemnica Psarskich Wzgórz" w Kinach</h3>
+                        <p>Nasz najnowszy thriller psychologiczny zadebiutował w kinach na terenie całego kraju. Film otrzymuje doskonałe recenzje od krytyków i cieszy się dużym zainteresowaniem publiczności.</p>
+                    </div>
+
+                    <div class="news-item">
+                        <div class="news-date">10 grudnia 2024</div>
+                        <h3>Nagroda na Festiwalu Kina Polskiego</h3>
+                        <p>"Powrót do Psar" zdobył prestiżową nagrodę dla najlepszego filmu polskiego roku. To ogromne wyróżnienie dla całego zespołu i potwierdzenie jakości naszych produkcji.</p>
+                    </div>
+
+                    <div class="news-item">
+                        <div class="news-date">28 listopada 2024</div>
+                        <h3>Otwarcie Nowego Studia Nagraniowego</h3>
+                        <p>Oficjalnie otwieramy nasze nowe, w pełni wyposażone studio nagraniowe z najnowoczesniejszym sprzętem audio. Inwestycja pozwoli nam na jeszcze wyższą jakość dźwięku w naszych produkcjach.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Modern navigation with smooth transitions
+        function showPage(pageId) {
+            const currentPage = document.querySelector('.page.active');
+            const targetPage = document.getElementById(pageId);
+            
+            if (currentPage === targetPage) return;
+            
+            // Fade out current page
+            currentPage.style.opacity = '0';
+            currentPage.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                currentPage.classList.remove('active');
+                targetPage.classList.add('active');
+                
+                // Fade in new page
+                targetPage.style.opacity = '0';
+                targetPage.style.transform = 'translateY(20px)';
+                
+                requestAnimationFrame(() => {
+                    targetPage.style.transition = 'opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+                    targetPage.style.opacity = '1';
+                    targetPage.style.transform = 'translateY(0)';
+                });
+            }, 200);
+            
+            // Update page title
+            const titles = {
+                'home': 'Studio Filmowe Psary',
+                'movies': 'Filmy - Studio Filmowe Psary',
+                'team': 'Kadra - Studio Filmowe Psary',
+                'history': 'Historia - Studio Filmowe Psary',
+                'apply': 'Aplikuj - Studio Filmowe Psary',
+                'news': 'Aktualności - Studio Filmowe Psary'
+            };
+            document.title = titles[pageId] || 'Studio Filmowe Psary';
+            
+            // Update active nav link
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+            });
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
+        }
+
+        
+    function playMovie(movieId) {
+        const movieSources = {
+            'movie1': {
+                title: 'Edit Emila',
+                src: 'emilFilm.mp4' 
+            },
+            'movie2': {
+                title: 'Edit Antka',
+                src: 'antekFilm.mp4'
+            },
+            'movie3': {
+                title: 'Edit Jakuba',
+                src: 'kubaFilm.mp4'
+            },
+            'movie4': {
+                title: 'Edit Marcela',
+                src: 'marcelFilm.mp4'
+            }
+        };
+
+        const movie = movieSources[movieId];
+
+        const modal = document.createElement('div');
+        modal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 15, 35, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        `;
+
+        const content = document.createElement('div');
+        content.style.cssText = `
+            background: rgba(15, 15, 35, 0.9);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            max-width: 90%;
+            max-height: 90%;
+        `;
+
+        content.innerHTML = `
+            <h3 style="margin-bottom: 1rem; color: #6366f1;">${movie.title}</h3>
+            <video controls autoplay style="max-width: 100%; max-height: 70vh; border-radius: 16px; margin-bottom: 1rem;">
+                <source src="${movie.src}" type="video/mp4">
+                Twój przeglądarka nie obsługuje odtwarzacza wideo.
+            </video>
+            <br/>
+            <button onclick="this.closest('div[style]').parentElement.remove()" style="
+                background: linear-gradient(135deg, #6366f1, #8b5cf6);
+                color: white;
+                border: none;
+                padding: 0.8rem 2rem;
+                border-radius: 10px;
+                cursor: pointer;
+                font-weight: 600;
+            ">Zamknij</button>
+        `;
+
+        modal.appendChild(content);
+        document.body.appendChild(modal);
+
+        requestAnimationFrame(() => {
+            modal.style.opacity = '1';
+        });
+    }
+
+
+        // Enhanced form handling with validation
+        document.getElementById('actorForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!validateForm()) return;
+            
+            // Animate submit button
+            const submitBtn = this.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+            
+            submitBtn.textContent = 'Wysyłanie...';
+            submitBtn.style.transform = 'scale(0.95)';
+            
+            setTimeout(() => {
+                // Success animation
+                submitBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+                submitBtn.textContent = '✓ Wysłano!';
+                
+                setTimeout(() => {
+                    // Show success modal
+                    showSuccessModal();
+                    this.reset();
+                    
+                    // Reset button
+                    setTimeout(() => {
+                        submitBtn.style.background = 'linear-gradient(135deg, #6366f1, #8b5cf6)';
+                        submitBtn.textContent = originalText;
+                        submitBtn.style.transform = 'scale(1)';
+                    }, 2000);
+                }, 1000);
+            }, 1500);
+        });
+
+        function validateForm() {
+            const requiredFields = document.querySelectorAll('#actorForm [required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.style.borderColor = '#ef4444';
+                    field.style.boxShadow = '0 0 0 3px rgba(239, 68, 68, 0.1)';
+                    isValid = false;
+                    
+                    setTimeout(() => {
+                        field.style.borderColor = 'rgba(99, 102, 241, 0.2)';
+                        field.style.boxShadow = 'none';
+                    }, 3000);
+                }
+            });
+            
+            return isValid;
+        }
+
+        function showSuccessModal() {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(15, 15, 35, 0.95);
+                backdrop-filter: blur(10px);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10000;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            `;
+            
+            modal.innerHTML = `
+                <div style="
+                    background: rgba(15, 15, 35, 0.9);
+                    border: 1px solid rgba(16, 185, 129, 0.3);
+                    border-radius: 20px;
+                    padding: 3rem;
+                    text-align: center;
+                    max-width: 500px;
+                    color: #f8fafc;
+                ">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">✨</div>
+                    <h3 style="margin-bottom: 1rem; color: #10b981;">Dziękujemy za aplikację!</h3>
+                    <p style="margin-bottom: 2rem; color: #94a3b8;">Twoja aplikacja została wysłana pomyślnie. Skontaktujemy się z Tobą w ciągu 7 dni roboczych.</p>
+                    <button onclick="this.parentElement.parentElement.remove()" style="
+                        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+                        color: white;
+                        border: none;
+                        padding: 0.8rem 2rem;
+                        border-radius: 10px;
+                        cursor: pointer;
+                        font-weight: 600;
+                    ">Zamknij</button>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            requestAnimationFrame(() => modal.style.opacity = '1');
+        }
+
+        // Smooth scrolling and enhanced interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize page transitions
+            document.querySelectorAll('.page').forEach(page => {
+                page.style.transition = 'opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+            });
+            
+            // Enhanced form interactions
+            document.querySelectorAll('#actorForm input, #actorForm textarea, #actorForm select').forEach(field => {
+                field.addEventListener('focus', function() {
+                    this.style.transform = 'translateY(-2px)';
+                });
+                
+                field.addEventListener('blur', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+            
+            // Intersection Observer for animations
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            // Observe elements for animation
+            document.querySelectorAll('.feature-card, .movie-card, .timeline-item, .news-item, .team-member').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+                observer.observe(el);
+            });
+        });
+
+        // Enhanced header behavior
+        let lastScrollY = window.scrollY;
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            const currentScrollY = window.scrollY;
+            
+            if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                header.style.transform = 'translateY(-100%)';
+            } else {
+                header.style.transform = 'translateY(0)';
+            }
+            
+            if (currentScrollY > 50) {
+                header.style.background = 'rgba(15, 15, 35, 0.95)';
+                header.style.borderBottomColor = 'rgba(99, 102, 241, 0.2)';
+            } else {
+                header.style.background = 'rgba(15, 15, 35, 0.8)';
+                header.style.borderBottomColor = 'rgba(99, 102, 241, 0.1)';
+            }
+            
+            lastScrollY = currentScrollY;
+        });
+    </script>
+</body>
+</html>
